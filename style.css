@@ -1,11 +1,16 @@
 body {
     margin: 0px;
     padding: 0px;
-    background: black
+    background: purple
 }
 
 h1 { 
     color: #dddddd;
     background-color: #333333;
+    padding-left: 100px;
     text-align: center;
+}
+
+#gameContainer {
+    padding-left: 30%
 }

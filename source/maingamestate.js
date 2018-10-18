@@ -13,7 +13,7 @@ mainGameState.create = function() {
     this.game.add.sprite(0, 0, 'space-bg');
     
      var shipX = this.game.width * 0.5;
-     var shipY = this.game.height * 0.90;
+     var shipY = this.game.height * 0.95;
 
     
     this.cursors = this.game.input.keyboard.createCursorKeys();        
