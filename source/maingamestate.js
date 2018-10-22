@@ -87,6 +87,7 @@ mainGameState.create = function() {
     this.livesValue.anchor.setTo(0.5, 0.5);
 
     this.playerLives = 3;
+    
 
     
 }
@@ -146,6 +147,12 @@ mainGameState.update = function() {
     
     //update text label for player score
     this.scoreValue.setText(this.playerScore);
+    
+   this.livesValue.setText(this.playerLives);
+ 
+    
+    //check for collision player - asteroid
+    this.game.physics.arcade.overlap(this.playerShip, this.asteroids, mainGameState.onAsteroidPlayerCollision, null,this);
     
 
  //check if player is dead
