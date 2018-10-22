@@ -4,7 +4,7 @@ mainGameState.preload = function() {
     console.log("Pre-loading the Game");
     this.game.load.image("space-bg", "assets/images/space-bg.jpg");
     this.game.load.image("player-ship", "assets/images/player-ship.png" );
-    this.game.load.image("asteroid-medium-01", "assets/images/asteroid-medium-01.png");
+    this.game.load.image("asteroid-medium-03", "assets/images/asteroid-medium-03.png");
     this.game.load.image("player-bullet", "assets/images/bullet-fire.png");  
     
     this.game.load.audio("game-music", "assets/music/maingame.mp3");
@@ -19,12 +19,12 @@ mainGameState.preload = function() {
 mainGameState.create = function() { 
     
        this.playerFireSfx = [];
-    this.playerFireSfx.push(game.add.audio("player_fire_01"));
-    this.playerFireSfx.push(game.add.audio("player_fire_02"));
-    this.playerFireSfx.push(game.add.audio("player_fire_03"));
-    this.playerFireSfx.push(game.add.audio("player_fire_04"));
-    this.playerFireSfx.push(game.add.audio("player_fire_05"));
-    this.playerFireSfx.push(game.add.audio("player_fire_06"));
+    this.playerFireSfx.push(this.game.add.audio("player_fire_01"));
+    this.playerFireSfx.push(this.game.add.audio("player_fire_02"));
+    this.playerFireSfx.push(this.game.add.audio("player_fire_03"));
+    this.playerFireSfx.push(this.game.add.audio("player_fire_04"));
+    this.playerFireSfx.push(this.game.add.audio("player_fire_05"));
+    this.playerFireSfx.push(this.game.add.audio("player_fire_06"));
     
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     
@@ -54,8 +54,8 @@ mainGameState.create = function() {
     this.asteroids = this.game.add.group();
     
      //bullets
-    //this.firebullets = this.game.add.group();
-    //this.fireTimer = 2.0;
+    this.firebullets = this.game.add.group();
+    this.fireTimer = 2.0;
     
     //set firekey to Z 
     this.fireKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
@@ -63,28 +63,28 @@ mainGameState.create = function() {
     this.fireTimer = 0.4;
     
     //setting up the scores
-    this.playerScore = 0;
-    
-    var textStyle = {font: "16px Arial", fill: "#ffffff", align: "center"}
+ 
+  var textStyle = {font: "16px Arial", fill: "#ffffff", align: "center"}
 
-    this.scoreTitle = this.game.add.text(this.game.width * 0.85, 30, "SCORE", textStyle);
+    this.scoreTitle = this.game.add.text(this.game.width * 0.15, 30, "SCORE", textStyle);
     this.scoreTitle.fixedToCamera = true;
     this.scoreTitle.anchor.setTo(0.5, 0.5);
 
-    this.scoreValue = this.game.add.text(this.game.width * 0.75, 30, "0", textStyle);
+    this.scoreValue = this.game.add.text(this.game.width * 0.15, 50, "0", textStyle);
     this.scoreValue.fixedToCamera = true;
     this.scoreValue.anchor.setTo(0.5, 0.5);
 
     this.playerScore = 0;
     
     ///Player lives
-    var textStyle = {font: "16px Arial", fill: "#ffffff", align: "center"}
+    
+      var textStyle = {font: "16px Arial", fill: "#ffffff", align: "center"}
 
     this.livesTitle = this.game.add.text(this.game.width * 0.85, 30, "LIVES", textStyle);
     this.livesTitle.fixedToCamera = true;
     this.livesTitle.anchor.setTo(0.5, 0.5);
 
-    this.livesValue = this.game.add.text(this.game.width * 0.75, 30, "0", textStyle);
+    this.livesValue = this.game.add.text(this.game.width * 0.85, 50, "0", textStyle);
     this.livesValue.fixedToCamera = true;
     this.livesValue.anchor.setTo(0.5, 0.5);
 
@@ -118,13 +118,15 @@ mainGameState.update = function() {
 
     if ( this.asteroidTimer <= 0.0 ) {
         console.log("SPAWN ASTEROID");
+        mainGameState.spawnAsteroid()
         this.asteroidTimer = 2.0;
+        
     }
     
     // Clean up any asteroids that have moved off the bottom of the screen
-    for( var i = 0; i < this.asteroids.children.length; i++ ) {
-        if ( this.asteroids.children[i].y > (this.game.height + 200) ) {
-            this.asteroids.children[i].destroy();
+    for( var z = 0; z < this.asteroids.children.length; z++ ) {
+        if ( this.asteroids.children[z].y > (this.game.height + 200) ) {
+            this.asteroids.children[z].destroy();
         }
     }
     
@@ -141,6 +143,18 @@ mainGameState.update = function() {
     }
     
      this.scoreValue.setText(this.playerScore);
+
+ //check if player is dead
+    if (this.playerLives <= 0) {
+        this.game.state.start("GameOver");
+    }
+    
+    //check if player won level
+     if (this.playerScore >= 50) {
+        this.game.state.start("Winner");
+}
+    
+    
 }
 
 
@@ -156,6 +170,9 @@ mainGameState.spawnAsteroid = function() {
     
     //add to the astroid group
     this.asteroids.add(asteroid);
+    
+    asteroid.body.velocity.y= this.rnd.integerInRange(100, 0);
+    this.asteroids.add(asteroid);
 }
 
 
@@ -166,7 +183,7 @@ mainGameState.spawnPlayerBullet = function() {
         
     this.fireTimer = 0.4;
   
-    var bullet = this.game.add.sprite(this.player.x, this.player.y, "player-bullet");
+    var bullet = this.game.add.sprite(this.playerShip.x, this.playerShip.y, "player-bullet");
     bullet.anchor.setTo(0.5, 0.5);
 
     this.game.physics.arcade.enable(bullet);
@@ -175,8 +192,8 @@ mainGameState.spawnPlayerBullet = function() {
     this.playerBullets.add(bullet);
     } 
     
-    var index = this.game.rnd.integerInRange(0, sfxArray.length - 1);
-    sfxArray[index].play();
+    var sfxindex = this.game.rnd.integerInRange(0, 5);
+    this.playerFireSfx[sfxindex].play();
     
 }
 
