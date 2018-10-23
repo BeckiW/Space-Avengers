@@ -7,10 +7,11 @@ body {
 h1 { 
     color: #dddddd;
     background-color: #333333;
-    padding-left: 100px;
     text-align: center;
 }
 
 #gameContainer {
-    padding-left: 38%
+    margin: 0 auto;
+    width: 600px;
 }
+

@@ -1,7 +1,7 @@
 var gameOverState = {}
 
 gameOverState.preload = function (){
-    this.game.load.image("gameoverbg", "assets/images/gameover.gif");
+    this.game.load.image("gameoverbg", "assets/images/GameOver.png");
     this.game.load.image("startoverbutton", "assets/images/button_play1.png");
         
 }
@@ -18,6 +18,9 @@ gameOverState.create = function () {
 
 gameOverState.update = function () {
     
+       if (this.spaceKey.isDown) {
+        this.game.state.start("MainGame");
+    }
     
 }
 

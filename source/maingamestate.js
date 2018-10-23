@@ -161,12 +161,11 @@ mainGameState.update = function() {
     }
     
     //check if player won level
-     if (this.playerScore >= 50) {
+     if (this.playerScore >= 150) {
         this.game.state.start("Winner");
 }
     
 }
-
 
 mainGameState.spawnAsteroid = function() {
     
