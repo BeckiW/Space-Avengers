@@ -18,7 +18,7 @@ mainGameState.preload = function() {
 
 mainGameState.create = function() { 
     
-       this.playerFireSfx = [];
+    this.playerFireSfx = [];
     this.playerFireSfx.push(this.game.add.audio("player_fire_01"));
     this.playerFireSfx.push(this.game.add.audio("player_fire_02"));
     this.playerFireSfx.push(this.game.add.audio("player_fire_03"));
@@ -31,10 +31,9 @@ mainGameState.create = function() {
     // Player ship
     this.game.add.sprite(0, 0, 'space-bg');
     
-     var shipX = this.game.width * 0.5;
-     var shipY = this.game.height * 0.8;
+    var shipX = this.game.width * 0.5;
+    var shipY = this.game.height * 0.8;
 
-    
     this.cursors = this.game.input.keyboard.createCursorKeys();        
 
     this.playerShip = this.game.add.sprite(shipX, shipY, 'player-ship');
@@ -42,7 +41,6 @@ mainGameState.create = function() {
     this.game.physics.arcade.enable(this.playerShip);
     
     //music
-    
     this.music = this.game.add.audio("game-music");
     this.music.play();
     this.music.volume = 0.5;
