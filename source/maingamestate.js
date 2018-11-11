@@ -51,7 +51,7 @@ mainGameState.create = function() {
     this.asteroidTimer= 2.0;
     this.asteroids = this.game.add.group();
     
-     //bullets
+    //bullets
     this.playerBullets = this.game.add.group();
     
     //set firekey to Z 
@@ -86,13 +86,11 @@ mainGameState.create = function() {
 
     this.playerLives = 3;
     
-
-    
 }
 
 mainGameState.update = function() { 
     
-     if ( this.cursors.left.isDown ) {
+    if ( this.cursors.left.isDown ) {
         this.playerShip.body.velocity.x = -200;
     } else if ( this.cursors.right.isDown ) {
         this.playerShip.body.velocity.x = 200;
@@ -100,7 +98,7 @@ mainGameState.update = function() {
         this.playerShip.body.velocity.x = 0;
     }
     
-  if ((this.playerShip.x > this.game.width) && (this.playerShip.body.velocity.x > 0)) {
+    if ((this.playerShip.x > this.game.width) && (this.playerShip.body.velocity.x > 0)) {
         this.playerShip.body.velocity.x = 0;
     }
 
@@ -116,11 +114,15 @@ mainGameState.update = function() {
     if ( this.asteroidTimer <= 0.0 ) {
         console.log("SPAWN ASTEROID");
         mainGameState.spawnAsteroid()
-        this.asteroidTimer = 2.0;
-        
+        this.asteroidTimer = 2.0; 
     }
     
     this.fireTimer -= this.game.time.physicsElapsed;
+    
+    if ( this.fireKey.isDown ) {
+        this.spawnPlayerBullet();
+    }
+    
     
     for (var j = 0; j < this.playerBullets.children.length; j++) {
         if ( this.playerBullets.children[j].y < -200 ) {
@@ -135,33 +137,29 @@ mainGameState.update = function() {
         }
     }
     
-    if ( this.fireKey.isDown ) {
-        this.spawnPlayerBullet();
-    }
-    
-   //check for collision asteroid - bullets
+
+    //check for collision asteroid - bullets
     this.game.physics.arcade.collide(this.asteroids, this.playerBullets, mainGameState.onAsteroidBulletCollision, null, this);
 
     
     //update text label for player score
     this.scoreValue.setText(this.playerScore);
-    
-   this.livesValue.setText(this.playerLives);
+    this.livesValue.setText(this.playerLives);
  
     
     //check for collision player - asteroid
     this.game.physics.arcade.overlap(this.playerShip, this.asteroids, mainGameState.onAsteroidPlayerCollision, null,this);
     
 
- //check if player is dead
+    //check if player is dead
     if (this.playerLives <= 0) {
         this.game.state.start("GameOver");
     }
     
     //check if player won level
-     if (this.playerScore >= 150) {
+    if (this.playerScore >= 150) {
         this.game.state.start("Winner");
-}
+    }
     
 }
 
@@ -178,7 +176,7 @@ mainGameState.spawnAsteroid = function() {
     //add to the astroid group
     this.asteroids.add(asteroid);
     
-    asteroid.body.velocity.y= this.rnd.integerInRange(100, 0);
+    asteroid.body.velocity.y= this.rnd.integerInRange(40, 100);
     this.asteroids.add(asteroid);
 }
 
@@ -201,9 +199,6 @@ mainGameState.spawnPlayerBullet = function() {
         var sfxindex = this.game.rnd.integerInRange(0, 5);
         this.playerFireSfx[sfxindex].play();
     } 
-    
-
-    
 }
 
 mainGameState.onAsteroidBulletCollision = function(asteroids, bullet){ 
