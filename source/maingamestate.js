@@ -1,4 +1,5 @@
 var mainGameState = {}
+var g_lastScore = 0;        // Global variable we can access anywhere
 
 mainGameState.preload = function() { 
     console.log("Pre-loading the Game");
@@ -153,6 +154,7 @@ mainGameState.update = function() {
 
     //check if player is dead
     if (this.playerLives <= 0) {
+        g_lastScore = this.playerScore;
         this.game.state.start("GameOver");
     }
     

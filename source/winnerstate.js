@@ -1,17 +1,17 @@
 var winnerGameState = {}
 
 winnerGameState.preload = function (){
-    
+    this.game.load.image("youWin", "assets/images/youWin.jpg");
 }
 
 
 winnerGameState.create = function () {
-    var textStyle1 = {font: "50px Arial", fill: "#43F723", align: "center"};
-    var textStyle2 = {font: "30px Arial", fill: "#ffffff", align: "center"};
+    this.game.add.sprite(0, 0, "youWin");
+    
+    var textStyle = {font: "20px Arial", fill: "#ffffff", align: "center"};
 
-	WinnerTitle = this.game.add.text(this.game.width * 0.3, 40, "YOU WON!", textStyle1);
-
-    WinnerText = this.game.add.text(this.game.width *0.15,130, "Want to play again? Click the 'Q' key", textStyle2);
+    WinnerText = this.game.add.text(this.game.width * 0.5, this.game.height * 0.6, "Want to play again? Click the 'Q' key", textStyle);
+    WinnerText.anchor.setTo(0.5, 0.5);
 
     this.startOverKey = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
 }
